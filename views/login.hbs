@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="style.css">
+
+    <title>Login page</title>
+
+</head>
+
+<body>
+
+
+    <div class="login">
+        <div class="login-triangle"></div>
+
+        <h2 class="login-header">QM - ENGLISH</h2>
+
+        <form action="/login" method="post" class="login-container">
+            <p><input type="text" class="form-control redText" name="txtName" id="txtName" placeholder="Username" required /></p>
+            <p><input type="password" class="form-control" name="txtPass" id="txtPass" placeholder="Password" required></p>
+            <p><input type="submit" value="Sign in"></p>
+        </form>
+    </div>
+
+    
+    {{!-- <div class="backG2">
+        <div id="leftLogin">
+            <h4>Sign in</h4>
+            <form action="/login" method="post">
+                <div>
+                    <input type="text" class="form-control redText" name="txtName" id="txtName" required />
+                    <label for="txtName">Username</label>
+                </div>
+                <br>
+                <div>
+                    <input type="password" class="form-control" name="txtPass" id="txtPass" required>
+                    <label for="txtPass">Password</label>
+                </div>
+                <br>
+                <div>
+                    <input class="btn btn-primary" type="submit" value="Sign in">
+                    <input class="btn btn-secondary" type="reset" value="Reset" />
+                </div>
+            </form>
+            <br><br>
+            <a href="/register">Register</a>
+        </div>
+    </div> --}}
+
+
+
+</body>
+
+</html>

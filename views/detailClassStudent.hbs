@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Manage Student</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<div class="container">
+		<div class="c-item nav">
+			<div class="logo-uni">
+				<img src="/images/logo_QM.png" alt="">
+			</div>
+			<a href="/student">
+				<li>Home</li>
+			</a>
+
+			<a href="/student/classesStudent">
+				<li style="background-color: #ddd;">Classes</li>
+			</a>
+		</div>
+		<div class="c-item search">
+			<form action="/admin/search" method="post" name="myForm" onsubmit="return validateForm()">
+				<input type="text" name="txtSearch" placeholder="Search username">
+			</form>
+		</div>
+		<div class="c-item profile">
+			<div class="user">
+				<img src="/images/logo-admin.png" height="50" alt="">
+				{{user.name}}
+				<div class="dropdown">
+					<a href="/student/profileStudent"> Profile </a>
+					<a href="/logout"> Logout </a>
+				</div>
+			</div>
+		</div>
+		<div class="c-item controller">
+		</div>
+		<div class="c-item body">
+			<div class="container">
+				<div class="table-wrapper">
+					<div class="table-title">
+						<div class="row">
+							<div class="col-sm-8">
+								<h2>ASSIGNMENT</h2>
+							</div>
+						</div>
+					</div>
+					<table class="table table-bordered">
+						<tbody>
+							{{#each assignment}}
+							<tr>
+								<td>
+									Tittle: <a href="/student/detailHWStudent?title={{title}}">{{title}}</a> 
+								</td>
+							</tr>
+							{{/each}}
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	{{!-- <footer>
+		QM - English
+	</footer> --}}
+</body>
+
+</html>
