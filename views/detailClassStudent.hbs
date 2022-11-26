@@ -6,6 +6,9 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Manage Student</title>
+	 <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="style.css">
 </head>
 
@@ -38,7 +41,26 @@
 				</div>
 			</div>
 		</div>
+		<style>
+			.ahsjkhjkehawas {
+				padding: 30px !important;
+				border: 1px solid #d9d9d9;
+				border-radius: 5px;
+				cursor: pointer;
+			}
+		</style>
 		<div class="c-item controller">
+			<div onclick="get_member()" class="ahsjkhjkehawas">Members</div>
+		</div>
+		<div style="padding: 20px">
+			<div id="list-teacher" class="aklsjkldjasas">
+
+			</div>
+			<br>
+			<br>
+			<div id="list-member">
+
+			</div>
 		</div>
 		<div class="c-item body">
 			<div class="container">
@@ -69,6 +91,27 @@
 	{{!-- <footer>
 		QM - English
 	</footer> --}}
+	<script>
+		const urlSearchParams = new URLSearchParams(window.location.search)
+		const myParam = urlSearchParams.get('className');
+		async function get_member() {
+			const res= await axios({
+				url: "http://localhost:2000/teacher/get/member",
+				method: "post",
+				data: {
+					className: myParam
+				}
+			})
+			const result= await res.data
+			console.log(result)
+			document.getElementById("list-teacher").innerHTML= `<strong>Teacher</strong>`+result.teacher.map(item=> `
+				<div>Name: ${item.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Username: ${item.userName}</div>
+			`)
+			document.getElementById("list-member").innerHTML= `<strong>Member</strong>` + result.member.map(item=> `
+				<div>Name: ${item.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Username: ${item.userName}</div>
+			`)
+		}
+	</script>
 </body>
 
 </html>

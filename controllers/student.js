@@ -24,7 +24,6 @@ router.get('/classesStudent', requireStudent, async (req, res) => {
     const user = req.session["Student"]
     const dbo = await getDB();
     const allClass = await dbo.collection("Students").findOne({ userName: user.name })
-
     res.render('classesStudent', { clss: allClass, user: user })
 })
 
@@ -33,7 +32,7 @@ router.get('/detailClassStudent', requireStudent, async (req, res) => {
     const className = req.query.className;
     const dbo = await getDB();
     const assignment = await dbo.collection('HomeWork').find({ className: className }).toArray();
-    console.log(assignment);
+    // console.log(assignment);
     res.render('detailClassStudent', { assignment: assignment, class: className });
 })
 
@@ -43,7 +42,7 @@ router.get('/detailHWStudent', requireStudent, async (req, res) => {
     const dbo = await getDB();
     const student = await dbo.collection("Students").findOne({ userName: user.name })
     const assignment = await dbo.collection('HomeWork').findOne({ title: title });
-    console.log(student)
+    // console.log(student)
     res.render('detailHWStudent', { assignment: assignment, student: student, userName: user.name, title: title })
 })
 

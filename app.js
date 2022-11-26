@@ -2,12 +2,8 @@ const express = require('express')
 const session = require('express-session')
 const { checkUserRole } = require('./databaseHandler')
 const { requiresLogin } = require('./decentralization')
-const  join_class_by_link = require('./controllers/join_class_via_link')
 const { ObjectId } = require('mongodb')
 const { insertObject, getDB } = require('./databaseHandler')
-const  get_member_class = require('./controllers/get_member_class')
-const marking = require('./controllers/marking')
-const get_mark = require('./controllers/get_mark')
 
 const admz = require('adm-zip')
 
@@ -27,8 +23,7 @@ app.get('/', (req, res) => {
 app.get('/register', (req, res) => {
     res.render('register')
 })
-app.post("/marking", marking)
-app.post("/get_mark", get_mark)
+
 
 app.post('/register', (req, res) => {
     const name = req.body.txtName
@@ -121,8 +116,9 @@ app.use('/student', studentController)
 const teacherController = require('./controllers/teacher')
 
 app.use('/teacher', teacherController)
-app.post("/get/member", get_member_class)
-app.post("/join-class", join_class_by_link)
+// app.post("/get/member", get_member_class)
+// app.post("/join-class", join_class_by_link)
+// app.post("/marking", marking)
 
 const PORT = process.env.PORT || 2000
 app.listen(PORT)

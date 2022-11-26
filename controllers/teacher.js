@@ -135,7 +135,7 @@ router.get('/classesTeacher', requireTeacher, async (req, res) => {
     const user = req.session["Teacher"]
     const dbo = await getDB();
     const allClasses = await dbo.collection("Teachers").findOne({ userName: user.name })
-
+    console.log("user", user)
     res.render('classesTeacher', { cls: allClasses, user: user })
 })
 
@@ -195,6 +195,46 @@ router.post('/scoreStudent', requireTeacher, async (req, res) => {
     res.redirect('/teacher/mark?title='+title)
 })
 
+router.post("/get_mark", async (req, res)=> {
+    const dbo = await getDB();
+    try {
+        const allClass = await dbo.collection("HomeWork").findOne({ title: req.body.title,submitAss: {$elemMatch: {student: req.body.user_name}} })
+        return res.status(200).json({allClass})
+    } catch (error) {
+        return res.json({error: error.message})
+    }
+})
+
+router.post("/marking", async (req, res)=> {
+    const dbo = await getDB();
+    try {
+        const allClass = dbo.collection("HomeWork").findOneAndUpdate({ title: req.body.title,submitAss: {$elemMatch: {student: req.body.user_name}} }, {$set: {"submitAss.$.score": req.body.score}})
+        return res.status(200).json({allClass})
+    } catch (error) {
+        return res.json({error: error.message})
+    }
+})
+
+router.post("/get/member", async (req, res)=> {
+    const dbo = await getDB();
+    try {
+        const teacher = await dbo.collection('Teachers').find({ Classes: {$in: [req.body.className]} }).toArray();
+        const member= await dbo.collection("Students").find({Classes: {$in: [req.body.className]}}).toArray()
+        return res.status(200).json({ teacher, member})
+    } catch (error) {
+        return res.json({error: error.message})
+    }
+})
+
+router.post("/join-class", async (req, res)=> {
+    const dbo = await getDB();
+    try {
+        const allClass =await dbo.collection("Classes").updateOne({className : req.body.class_id }, {$push: {students: req.body.user}})
+        return res.status(200).json({allClass})
+    } catch (error) {
+        return res.json({error: error.message})
+    }
+})
 
 router.get('/members', requireTeacher, async (req, res) => {
     const className = req.query.className;

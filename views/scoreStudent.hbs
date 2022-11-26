@@ -64,7 +64,7 @@
     <script>
         async function marking() {
             const res= await axios({
-                url: "http://localhost:2000/marking",
+                url: "http://localhost:2000/teacher/marking",
                 method: "post",
                 data: {
                     user_name: $("#user-name").val(),
