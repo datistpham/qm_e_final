@@ -41,23 +41,53 @@
                 </div>
             </div>
         </div>
+        <style>
+            .wrap-1-1 {
+                display: flex;
+                
+            }
+        </style>
+        <div class="wrap-1-1">
+                <div class="c-item body">
+                <h2>Scoring for students: <div >{{student}}<div></h2>
+                <input type="hidden" name="txtStudent" id="user-name" value="{{student}}">
+                {{!-- {{#each sub.submitAss}}
+                <a style="color: blue;" href="/downloadzipp?filename={{filename}}">{{filename}}</a> <br>
+                {{/each}} --}}
         
-        <div class="c-item body">
-			
-            <h2>Scoring for students: <div >{{student}}<div></h2>
-            <input type="hidden" name="txtStudent" id="user-name" value="{{student}}">
-            <form action="scoreStudent" method="post">
-                <input id="title-ex" type="hidden" name="txtTitle" value="{{title}}">
-                <input type="hidden" name="txtStudent" value="{{student}}">
-                Score: <input id="score-result" type="number" name="score" min="0" max="100"> /100 <br><br>
+                <style>
+                    .frame-main {
+                        width: 700px;
+                        height: 400px;
+                    }
+                    .wrap-right {
+                        padding: 10px;
+                    }
+                    .comment-user {
+                        width: 100%;
+                        resize: none;
+                    }
+                </style>
+                <div class="wrap-frame">
+                    <iframe class="frame-main" src="https://docs.google.com/gview?url={{user_ass.file_url}}&embedded=true"></iframe>
+                </div>
+            </div>
 
-                <button id="save" onclick="marking()">Add</button>
-                <a id="cancel" href="/teacher">Cancel</a>
-            </form>
-			{{!-- {{#each sub.submitAss}}
-            <a style="color: blue;" href="/downloadzipp?filename={{filename}}">{{filename}}</a> <br>
-            {{/each}} --}}
-       
+            <div class="wrap-right">
+                <form action="scoreStudent" method="post">
+                    <input id="title-ex" type="hidden" name="txtTitle" value="{{title}}">
+                    <input type="hidden" name="txtStudent" value="{{student}}">
+                    Score: <input id="score-result" type="number" name="score" min="0" max="100"> /100 <br><br>
+                    <br>
+                    <div>
+                        <div>Comment for this assignment: </div>
+                        <br>
+                        <textarea class="comment-user" placeholder="Type your comment" name="" id="comment-user" cols="30" rows="10"></textarea>
+                    </div>
+                    <button id="save" onclick="marking()">Add</button>
+                    <a id="cancel" href="/teacher">Cancel</a>
+                </form>
+            </div>
         </div>
 		
     </div>
@@ -69,11 +99,11 @@
                 data: {
                     user_name: $("#user-name").val(),
                     title: $("#title-ex").val(),
-                    score: $("#score-result").val()
+                    score: $("#score-result").val(),
+                    comment: $("#comment-user").val()
                 }
             })
             const result= await res.data
-            return console.log(result)
         }
     </script>
     <footer>

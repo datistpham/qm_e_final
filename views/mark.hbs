@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <title>Manage Student</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -38,9 +39,19 @@
                 </div>
             </div>
         </div>
-        
+        <style>
+            .wrap-1-2 {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+        </style>
+        <input type="hidden" value="{{mark.submitAss.length}}" id="count-ass">
         <div class="c-item body">
-            <h2>Student has submitted</h2>
+            <div class="wrap-1-2">
+                <h2>Student has submitted</h2>
+                <h2>Number of members who have submitted: <span id="d-count-ass"></span></h2>
+            </div>
             <table>
                 <tr>
                     <th>Full Name</th>
@@ -71,6 +82,9 @@
     <footer>
         QM - English
     </footer>
+    <script>
+        document.getElementById("d-count-ass").innerHTML= $("#count-ass").val()
+    </script>
 </body>
 
 </html>

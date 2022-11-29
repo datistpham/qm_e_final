@@ -59,6 +59,8 @@
 			Assignment submitted: <span id="ass-submitted"></span><br>
 			<br>
 			<div>Score: <span id="score-user"></span></div>
+			<br>
+			<div>Teacher's comment: <span id="comment-user"></span></div>
 			{{#each assignment.submitAss}}
 			<a style="color: blue;" href="/downloadzipp?filename={{filename}}">{{filename}}</a> <br>
 			{{/each}}
@@ -66,7 +68,7 @@
 			<br><br>
 
 			{{!-- Comment --}}
-			<div class="form-comment">
+			{{!-- <div class="form-comment">
 				<form onsubmit="return postComment(this)" style="margin-bottom:10px ;">
 					<input type="hidden" id="userName" value="{{student.name}}">
 					<input type="hidden" id="title" value="{{assignment.title}}">
@@ -85,7 +87,7 @@
 					</li>
 					{{/each}}
 				</ul>
-			</div>
+			</div> --}}
 		</div>
 	</div>
 	{{!-- <footer>
@@ -147,6 +149,7 @@
 			const result= await res.data
 			document.getElementById("ass-submitted").innerHTML= result.allClass.submitAss.filter(item=> item.student.trim() === $("#user-name").val().trim()).map(item=>  `<a href="${item.file[0].path}">${item.file[0].filename}</a>`)
 			document.getElementById("score-user").innerHTML= result.allClass.submitAss.filter(item=> item.student.trim() === $("#user-name").val().trim()).map(item=>  `${item.score}`)
+			document.getElementById("comment-user").innerHTML= result.allClass.submitAss.filter(item=> item.student.trim()=== $("#user-name").val().trim()).map(item=> `${item?.comment}`)
 		}
 		get_mark_user()
 	</script>

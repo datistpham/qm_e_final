@@ -6,6 +6,15 @@ const { ObjectId } = require('mongodb')
 const { insertObject, getDB } = require('../databaseHandler')
 const { requireStudent } = require('../decentralization')
 const router = express.Router()
+const cloudinary = require("cloudinary")
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_NAME || "cockbook",
+    api_key: process.env.CLOUDINARY_KEY || "362125891568421",
+    api_secret: process.env.CLOUDINARY_SECRET || "kR3bk36ysLWcYuKLy-MN9otXogM"
+  });
+  
+const cloudinaryInstance= cloudinary.v2
 
 const multer = require('multer')
 const path = require('path')
@@ -75,36 +84,42 @@ router.get('/submitAssignment', requireStudent, (req, res) => {
 var upload = multer({ storage: storage, fileFilter: fileFilter })
 
 router.post('/submitAssignment', upload.array('myFiles'), requireStudent, async (req, res) => {
+    let result_url= ''
     const user = req.session["Student"]
     const title = req.body.title
     const files = req.files
+    console.log(files)
     const score = req.body.score
     const dbo = await getDB();
     const student = await dbo.collection("Students").findOne({ userName: user.name })
-
-    await dbo.collection('Students').updateOne({ userName: user.name }, {
-        $push: {
-            'submitAssignment': {
-                
-                'title': title,
-                'file': files,
-                'score':score
-            }
-
-        }
-    })
-    await dbo.collection('HomeWork').updateOne({ title: title }, {
-        $push: {
-            'submitAss':{
-                'title':title,
-                'student': student.name,
-                'file': files,
-                'score':score
-            }
-            
-        }
-    })
-
+    await cloudinaryInstance.uploader.upload("./public/submit/"+ files?.[0].filename ,  { resource_type: "raw" }, 
+       async function(error, result) {
+            await dbo.collection('Students').updateOne({ userName: user.name }, {
+                $push: {
+                    'submitAssignment': {
+                        'title': title,
+                        'file': files,
+                        'score':score,
+                        'file_url': result.secure_url
+                    }
+        
+                }
+            })
+            await dbo.collection('HomeWork').updateOne({ title: title }, {
+                $push: {
+                    'submitAss':{
+                        'title':title,
+                        'student': student.name,
+                        'file': files,
+                        'score':score,
+                        'file_url': result.secure_url
+                    }
+                    
+                }
+            })
+        
+        })
+    
     res.redirect('detailHWStudent?title='+title)
 })
 

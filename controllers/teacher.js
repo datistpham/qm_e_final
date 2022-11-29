@@ -104,7 +104,7 @@ var upload = multer({ storage: storage, fileFilter: fileFilter })
 //Add Homework
 router.get('/addHomework', requireTeacher, (req, res) => {
     const className = req.query.className
-    console.log(className);
+    // console.log(className);
     res.render('addHomework', { className: className })
 })
 
@@ -135,7 +135,7 @@ router.get('/classesTeacher', requireTeacher, async (req, res) => {
     const user = req.session["Teacher"]
     const dbo = await getDB();
     const allClasses = await dbo.collection("Teachers").findOne({ userName: user.name })
-    console.log("user", user)
+    // console.log("user", user)
     res.render('classesTeacher', { cls: allClasses, user: user })
 })
 
@@ -147,7 +147,7 @@ router.get('/detailHomework', requireTeacher, async (req, res) => {
     const teacher = await dbo.collection("Teachers").findOne({ userName: user.name })
 
     const assignment = await dbo.collection('HomeWork').findOne({ title: title })
-    console.log(title);
+    // console.log(title);
     res.render('detailHomework', { assignment: assignment, teacher: teacher })
 })
 
@@ -172,20 +172,21 @@ router.get('/scoreStudent', requireTeacher, async (req, res) => {
     const student = req.query.student
     const className = req.query.className
     const title = req.query.title
-    console.log("req query", req.query)
+    // console.log("req query", req.query)
     const dbo = await getDB()
-    const sub = await dbo.collection('HomeWork').findOne({ className: className })
-    res.render('scoreStudent', { student:student, sub:sub, title: title })
+    const sub = await dbo.collection('HomeWork').findOne({ title: title, submitAss: {$elemMatch: {student: student}} })
+    const user_ass= sub?.submitAss?.filter(item=> item.student=== student)?.[0]
+    res.render('scoreStudent', { student:student, sub:sub, title: title, user_ass: user_ass })
 })
 
 router.post('/scoreStudent', requireTeacher, async (req, res) => {
     const title = req.body.txtTitle
     const score = req.body.score
     const student = req.body.txtStudent
-    console.log(student);
+    // console.log(student);
     const dbo = await getDB()
     const a = await dbo.collection("HomeWork").findOne({title:title, 'submitAss.student':student});
-    console.log(a);
+    // console.log(a);
     await dbo.collection("HomeWork").updateOne({title:title, student:student},{
         $set: {
             score:score
@@ -208,7 +209,7 @@ router.post("/get_mark", async (req, res)=> {
 router.post("/marking", async (req, res)=> {
     const dbo = await getDB();
     try {
-        const allClass = dbo.collection("HomeWork").findOneAndUpdate({ title: req.body.title,submitAss: {$elemMatch: {student: req.body.user_name}} }, {$set: {"submitAss.$.score": req.body.score}})
+        const allClass = dbo.collection("HomeWork").findOneAndUpdate({ title: req.body.title,submitAss: {$elemMatch: {student: req.body.user_name}} }, {$set: {"submitAss.$.score": req.body.score, "submitAss.$.comment": req.body.comment}})
         return res.status(200).json({allClass})
     } catch (error) {
         return res.json({error: error.message})
@@ -245,20 +246,20 @@ router.get('/members', requireTeacher, async (req, res) => {
     //     const element = student[i];
     //     console.log(element);
     // }
-    console.log(member)
+    // console.log(member)
     res.render('members', { teacher: teacher,member: member, class: className });
     
 })
 
 //Comment newspaper
 router.post("/user-comment", async (req, res) => {
-    console.log("connected comment");
+    // console.log("connected comment");
     const account = req.session["Teacher"]
 
     const title = req.body.title;
     const comment = req.body.comment;
-    console.log(title);
-    console.log(comment);
+    // console.log(title);
+    // console.log(comment);
     //date time current
     const d = new Date();
     var minutes = d.getMinutes();
